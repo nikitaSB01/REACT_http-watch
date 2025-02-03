@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import React, { Component } from "react";
+import Clock from "./components/Clock/Clock";
+import ClockForm from "./components/ClockForm/ClockForm";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface ClockData {
+  id: number;
+  name: string;
+  timezone: number;
 }
 
-export default App
+interface AppState {
+  clocks: ClockData[];
+}
+
+class App extends Component<object, AppState> {
+  constructor(props: object) {
+    super(props);
+    this.state = {
+      clocks: [],
+    };
+  }
+
+  handleAddClock = (name: string, timezone: number) => {
+    const newClock: ClockData = { id: Date.now(), name, timezone };
+    this.setState((prevState) => ({ clocks: [...prevState.clocks, newClock] }));
+  };
+
+  handleRemoveClock = (id: number) => {
+    this.setState((prevState) => ({
+      clocks: prevState.clocks.filter((clock) => clock.id !== id),
+    }));
+  };
+
+  render() {
+    const { clocks } = this.state;
+
+    return (
+      <div className="app">
+        <ClockForm onAddClock={this.handleAddClock} />
+        <div className="clocks">
+          {clocks.map((clock) => (
+            <Clock
+              key={clock.id}
+              id={clock.id}
+              name={clock.name}
+              timezone={clock.timezone}
+              onRemove={this.handleRemoveClock}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default App;
