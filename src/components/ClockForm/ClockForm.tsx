@@ -1,4 +1,4 @@
-import React, { Component, ChangeEvent, FormEvent } from "react";
+import { Component, ChangeEvent, FormEvent } from "react";
 
 interface ClockFormProps {
   onAddClock: (name: string, timezone: number) => void;

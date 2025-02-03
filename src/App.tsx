@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { Component } from "react";
+import { Component } from "react";
 import Clock from "./components/Clock/Clock";
 import ClockForm from "./components/ClockForm/ClockForm";
 
